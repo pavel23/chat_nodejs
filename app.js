@@ -1,6 +1,7 @@
 var express = require('express')
 , path = require('path')
-, http = require('http');
+, http = require('http')
+, user = require("./models/users.js");
 
 var app = express();
 
@@ -15,12 +16,9 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 
 var io = require('socket.io').listen(server);
 
-
 app.get('/', function (req, res) {
   res.render('index.jade');
 });
-
-var usernames = {};
 
 io.sockets.on('connection', function (socket) {
   // cuando el cliente emite 'sendchat', este escucha y ejecuta
@@ -31,24 +29,30 @@ io.sockets.on('connection', function (socket) {
 
   // cuando el cliente emite 'adduser', este escucha y ejecuta
   socket.on('adduser', function(username){
-    socket.username = username;
-    usernames[username] = username;
-    // Emite un mensaje que el cliente se ha conectado
-    socket.emit('updatechat', 'SERVER', ' se ha conectado');
-    // Emite mensaje a todos los clientes que un cliente se ha conectado
-    socket.broadcast.emit('updatechat', 'SERVER', username + ' se ha conectado');
-    // Actualiza la lista de usuario en el lado del cliente
-    io.sockets.emit('updateusers', usernames);
+    if(user.findUser(username) > -1){
+      socket.emit('errorchat', username,'Usuario ya existe');
+    }else{
+      username = user.addUser(username);
+      socket.username = username;
+      // Emite un mensaje que el cliente se ha conectado
+      socket.emit('updatechat', 'SERVER', ' se ha conectado');
+      // Emite mensaje a todos los clientes que un cliente se ha conectado
+      socket.broadcast.emit('updatechat', 'SERVER', username + ' se ha conectado');
+      // Actualiza la lista de usuario en el lado del cliente
+      io.sockets.emit('updateusers', user.getUsers());
+    }
+    
   });
 
   // Cuando el usuario se desconecta
-  socket.on('disconnect', function(){
-    // elimina el nombre de suario de la lista de usuarios
-    delete usernames[socket.username];
-    // Actualiza la lista de usuarios en el lado del cliente
-    io.sockets.emit('updateusers', usernames);
-    // Emite un mensdaje globalmente que el usuario se ha desconectado
-    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' se ha desconectado');
+  socket.on('disconnect', function(){    
+    if(user.deleteUser(socket.username) == true){
+      // Actualiza la lista de usuarios en el lado del cliente
+      io.sockets.emit('updateusers',  user.getUsers());
+      // Emite un mensdaje globalmente que el usuario se ha desconectado
+      socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' se ha desconectado');
+    }
+    
   });
 
 });
