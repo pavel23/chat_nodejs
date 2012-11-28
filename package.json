@@ -1,16 +1,13 @@
 {
-  "name": "application-name",
-  "version": "0.0.1-1",
+  "name": "Chat_NodeJs",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
     "express": "3.0.0rc4",
-    "jade": "*"
-  },
-  "subdomain": "pavel23.demo2",
-  "engines": {
-    "node": "0.8.x"
+    "jade": "*",
+    "socket.io": "*"
   }
 }
