@@ -1,5 +1,5 @@
 //var socket = io.connect('http://localhost');
-var socket = io.connect('http://pavel23.chat_node.jit.su');
+var socket = io.connect('http://c9.io/pavel23/chat_nodejs');
 
 socket.on('connect', function(){
   socket.emit('adduser', prompt("Ingrese su Nombre?"));
