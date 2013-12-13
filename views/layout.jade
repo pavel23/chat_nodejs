@@ -2,9 +2,36 @@ doctype 5
 html
 	head
 		title= 'Chat'
-		link(rel='stylesheet', href='/stylesheets/style.css')
-		script(src='/javascripts/jquery-1.8.3.min.js')
+		link(rel='stylesheet', href='/assets/dist/css/bootstrap.min.css')
+		link(rel='stylesheet', href='/assets/css/style.css')
+		script(src='/assets/js/jquery.js')
+		script(src='/assets/dist/js/bootstrap.min.js')
+		script(src='/assets/dist/js/jquery.tmpl.js')
 		script(src='/socket.io/socket.io.js')
-		script(src='/javascripts/chat.js')
+		script(src='/assets/js/chat.js')
+
+		script(id="conversations" type="text/x-jquery-tmpl")
+			li(class='${position} clearfix')
+				span(class='chat-img pull-${position}')
+					{{if position=="left"}}
+					img(src='http://placehold.it/50/55C1E7/fff&text=U' alt='User Avatar' class='img-circle' )
+					{{else}}
+					img(src='http://placehold.it/50/FA6F57/fff&text=ME' alt='User Avatar' class='img-circle' )
+					{{/if}}
+				div(class='chat-body clearfix')
+					div.header
+						{{if position=="left"}}
+						small(class='pull-right text-muted')
+							span(class='glyphicon glyphicon-time')|  12 mins ago
+						strong(class='primary-font')| ${user}
+						{{else}}
+						strong(class='primary-font pull-${position}')| ${user}
+						small(class='text-muted')
+							span(class='glyphicon glyphicon-time')|  12 mins ago
+
+						{{/if}}
+					p| ${conversation}
+
+
 	body
 		block content

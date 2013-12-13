@@ -1,0 +1,28 @@
+extends layout
+
+block content
+	div(class='container' id='container_login')
+		div.row
+			div(class='col-sm-6 col-md-4 col-md-offset-4')
+				h1(class='text-center login-title')| Sign in to Chat
+				div.account-wall
+					img(class='profile-img' src='https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120')
+					form(class='form-signin' id='frm_login')
+						input( id='btn-name' type='text' class='form-control' placeholder='Ingrese su Nombre')
+						button(class='btn btn-lg btn-primary btn-block' id='btn_login' type='button')| Aceptar
+	div(class='row' id='container_chat')
+		div.col-md-5
+			div(class='panel panel-primary')
+				div.panel-heading
+					span(class='glyphicon glyphicon-comment')
+					|  Chat
+					div(class='btn-group pull-right')
+						button(type='button' class='btn btn-default btn-xs dropdown-toggle' data-toggle='dropdown')
+							span(class='glyphicon glyphicon-chevron-down')
+				div.panel-body
+					ul(class='chat' id='wrapper_conversations')
+				div.panel-footer
+					div.input-group
+						input( id='input_message' type='text' class='form-control input-sm' placeholder='Type your message here...')
+						span.input-group-btn
+							button(class='btn btn-warning btn-sm' id='btn_send_chat')| Enviar
