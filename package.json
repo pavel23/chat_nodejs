@@ -8,6 +8,7 @@
   "dependencies": {
     "express": "3.4.5",
     "socket.io": "0.9.16",
-    "consolidate" "*"
+	"jade": "*",
+	"consolidate":"*"
   }
 }
